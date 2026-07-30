@@ -14,23 +14,4 @@ for path in [parent_dir, backend_dir, current_dir]:
     if path not in sys.path:
         sys.path.insert(0, path)
 
-try:
-    from app.main import app
-except Exception as e:
-    # Fallback FastAPI app if module import fails
-    from fastapi import FastAPI
-    from fastapi.responses import JSONResponse
-
-    app = FastAPI(title="AI Resume Analyzer API (Error Mode)")
-
-    @app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"])
-    async def catch_all_error(path: str):
-        return JSONResponse(
-            status_code=500,
-            content={
-                "error": "Backend initialization failed",
-                "detail": str(e),
-                "sys_path": sys.path,
-                "current_dir": current_dir,
-            }
-        )
+from app.main import app
