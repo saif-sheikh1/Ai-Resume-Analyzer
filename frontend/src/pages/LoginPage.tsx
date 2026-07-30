@@ -16,18 +16,32 @@ export default function LoginPage() {
   const { login, isLoading } = useAuthStore();
   const navigate = useNavigate();
 
+  const parseErrorMessage = (err: any): string => {
+    if (!err.response) {
+      return "Unable to connect to backend server. Please check your network or VITE_API_URL setting.";
+    }
+
+    const detail = err.response?.data?.detail;
+    if (typeof detail === "string") {
+      return detail;
+    }
+
+    if (Array.isArray(detail) && detail.length > 0) {
+      return detail.map((e: any) => e.msg || e.message).join(", ");
+    }
+
+    return "Login failed. Invalid email or password.";
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(email, password);
+      await login(email.trim().toLowerCase(), password);
       toast.success("Welcome back!");
       navigate("/dashboard");
     } catch (err: any) {
-      if (!err.response) {
-        toast.error("Unable to connect to API server. Please verify backend is running and VITE_API_URL is configured.");
-      } else {
-        toast.error(err.response?.data?.detail || "Login failed. Invalid email or password.");
-      }
+      const errorMsg = parseErrorMessage(err);
+      toast.error(errorMsg);
     }
   };
 
@@ -63,7 +77,7 @@ export default function LoginPage() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
@@ -93,8 +107,8 @@ export default function LoginPage() {
                   </button>
                 </div>
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              <Button type="submit" className="w-full text-base h-11" disabled={isLoading}>
+                {isLoading ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : null}
                 Sign In
               </Button>
             </form>

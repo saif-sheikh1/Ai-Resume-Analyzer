@@ -18,6 +18,23 @@ export default function RegisterPage() {
   const { register, isLoading } = useAuthStore();
   const navigate = useNavigate();
 
+  const parseErrorMessage = (err: any): string => {
+    if (!err.response) {
+      return "Unable to connect to backend server. Please check your network or VITE_API_URL setting.";
+    }
+
+    const detail = err.response?.data?.detail;
+    if (typeof detail === "string") {
+      return detail;
+    }
+
+    if (Array.isArray(detail) && detail.length > 0) {
+      return detail.map((e: any) => e.msg || e.message).join(", ");
+    }
+
+    return "Registration failed. Please try a different email or password.";
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -25,19 +42,17 @@ export default function RegisterPage() {
       return;
     }
     if (password.length < 8) {
-      toast.error("Password must be at least 8 characters");
+      toast.error("Password must be at least 8 characters long");
       return;
     }
+
     try {
-      await register(email, fullName, password);
+      await register(email.trim().toLowerCase(), fullName.trim(), password);
       toast.success("Account created successfully!");
       navigate("/dashboard");
     } catch (err: any) {
-      if (!err.response) {
-        toast.error("Unable to connect to API server. Please verify backend is running and VITE_API_URL is configured.");
-      } else {
-        toast.error(err.response?.data?.detail || "Registration failed. Please check your credentials.");
-      }
+      const errorMsg = parseErrorMessage(err);
+      toast.error(errorMsg);
     }
   };
 
@@ -74,33 +89,66 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="fullName">Full Name</Label>
-                <Input id="fullName" placeholder="John Doe" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+                <Input
+                  id="fullName"
+                  placeholder="John Doe"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <Label htmlFor="email">Email Address</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
-                  <Input id="password" type={showPassword ? "text" : "password"} placeholder="At least 8 characters" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                  <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-[hsl(var(--muted-foreground))]" onClick={() => setShowPassword(!showPassword)}>
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="At least 8 characters"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input id="confirmPassword" type="password" placeholder="Confirm your password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              <Button type="submit" className="w-full text-base h-11" disabled={isLoading}>
+                {isLoading ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : null}
                 Create Account
               </Button>
             </form>
             <p className="text-center text-sm text-[hsl(var(--muted-foreground))] mt-6">
               Already have an account?{" "}
-              <Link to="/login" className="text-[hsl(var(--primary))] hover:underline font-medium">Sign In</Link>
+              <Link to="/login" className="text-[hsl(var(--primary))] hover:underline font-medium">
+                Sign In
+              </Link>
             </p>
           </CardContent>
         </Card>
