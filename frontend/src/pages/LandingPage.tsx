@@ -200,6 +200,121 @@ function StatsSection() {
 }
 
 
+/* ─── Interactive ATS Scanner Section ─────────────────────── */
+function InteractiveScannerSection() {
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanComplete, setScanComplete] = useState(false);
+
+  const handleScan = () => {
+    setIsScanning(true);
+    setScanComplete(false);
+    setTimeout(() => {
+      setIsScanning(false);
+      setScanComplete(true);
+    }, 3000);
+  };
+
+  return (
+    <section className="py-24 bg-[hsl(var(--muted)/0.3)] overflow-hidden">
+      <div className="container mx-auto px-4">
+        <motion.div className="text-center mb-16" {...fadeInUp} viewport={{ once: true }}>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">See the AI in Action</h2>
+          <p className="text-[hsl(var(--muted-foreground))] text-lg">Watch how our ATS simulator extracts and analyzes data instantly.</p>
+        </motion.div>
+
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          {/* Mock Document */}
+          <motion.div 
+            className="relative glass rounded-xl p-8 border border-[hsl(var(--border))] shadow-2xl h-[400px] overflow-hidden bg-white/5 dark:bg-black/20"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            {isScanning && (
+              <div className="absolute left-0 w-full h-1 bg-[hsl(var(--primary))] shadow-[0_0_15px_hsl(var(--primary))] z-10 animate-scan" />
+            )}
+            <div className="space-y-4 opacity-70">
+              <div className="h-6 w-1/3 bg-[hsl(var(--foreground)/0.2)] rounded" />
+              <div className="h-4 w-1/4 bg-[hsl(var(--foreground)/0.15)] rounded mb-8" />
+              
+              <div className="space-y-2">
+                <div className="h-3 w-full bg-[hsl(var(--foreground)/0.1)] rounded" />
+                <div className="h-3 w-5/6 bg-[hsl(var(--foreground)/0.1)] rounded" />
+                <div className="h-3 w-4/6 bg-[hsl(var(--foreground)/0.1)] rounded" />
+              </div>
+              
+              <div className="pt-6 space-y-2">
+                <div className="h-4 w-1/4 bg-[hsl(var(--foreground)/0.2)] rounded mb-2" />
+                <div className="h-3 w-full bg-[hsl(var(--foreground)/0.1)] rounded" />
+                <div className="h-3 w-full bg-[hsl(var(--foreground)/0.1)] rounded" />
+                <div className="h-3 w-3/4 bg-[hsl(var(--foreground)/0.1)] rounded" />
+              </div>
+            </div>
+            
+            {scanComplete && (
+              <motion.div 
+                className="absolute inset-0 bg-[hsl(var(--primary)/0.05)] border-2 border-[hsl(var(--primary))] rounded-xl pointer-events-none"
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+              />
+            )}
+          </motion.div>
+
+          {/* Controls & Results */}
+          <motion.div 
+            className="flex flex-col justify-center space-y-8"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <div>
+              <h3 className="text-2xl font-bold mb-4">Deep Keyword Extraction</h3>
+              <p className="text-[hsl(var(--muted-foreground))] mb-6">
+                Our engine simulates exactly how enterprise Applicant Tracking Systems parse your resume, identifying missing skills instantly.
+              </p>
+              <Button onClick={handleScan} disabled={isScanning} size="lg" className="w-full sm:w-auto">
+                {isScanning ? (
+                  <><Sparkles className="mr-2 h-4 w-4 animate-spin" /> Scanning Document...</>
+                ) : (
+                  <><Target className="mr-2 h-4 w-4" /> Run Live ATS Scan</>
+                )}
+              </Button>
+            </div>
+
+            <div className="glass rounded-xl p-6 min-h-[160px]">
+              {scanComplete ? (
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold">ATS Compatibility Score</span>
+                    <span className="text-2xl font-bold text-[hsl(var(--primary))]">87%</span>
+                  </div>
+                  <div className="w-full bg-[hsl(var(--muted))] h-2 rounded-full overflow-hidden">
+                    <motion.div 
+                      className="bg-[hsl(var(--primary))] h-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: "87%" }}
+                      transition={{ duration: 1, ease: "easeOut" }}
+                    />
+                  </div>
+                  <div className="flex gap-2 pt-2 flex-wrap">
+                    <span className="px-2 py-1 bg-green-500/20 text-green-600 dark:text-green-400 text-xs rounded-full font-medium">React found</span>
+                    <span className="px-2 py-1 bg-green-500/20 text-green-600 dark:text-green-400 text-xs rounded-full font-medium">Python found</span>
+                    <span className="px-2 py-1 bg-red-500/20 text-red-600 dark:text-red-400 text-xs rounded-full font-medium">Missing: Docker</span>
+                  </div>
+                </motion.div>
+              ) : (
+                <div className="flex items-center justify-center h-full text-[hsl(var(--muted-foreground))] opacity-50">
+                  Click 'Run Live ATS Scan' to see results
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 /* ─── FAQ Section ──────────────────────────────────────────── */
 const faqs = [
@@ -339,6 +454,7 @@ export default function LandingPage() {
       <FeaturesSection />
       <HowItWorksSection />
       <StatsSection />
+      <InteractiveScannerSection />
       <FAQSection />
       <CTASection />
       <Footer />
