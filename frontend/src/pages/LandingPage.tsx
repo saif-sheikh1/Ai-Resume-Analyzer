@@ -24,20 +24,24 @@ const staggerChildren = {
 function HeroSection() {
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Minimalist background */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[hsl(var(--muted))] via-[hsl(var(--background))] to-[hsl(var(--background))] opacity-50" />
+      {/* Animated background */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-[hsl(239,84%,67%/0.15)] rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[hsl(263,70%,58%/0.1)] rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[hsl(142,71%,45%/0.08)] rounded-full blur-3xl animate-float" style={{ animationDelay: "4s" }} />
+      </div>
 
       <div className="container mx-auto px-4 py-20 text-center">
 
 
         <motion.h1
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tighter mb-6"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
         >
           Your Resume,{" "}
-          <span className="text-[hsl(var(--foreground))] opacity-90">Supercharged</span>
+          <span className="gradient-text">Supercharged</span>
           <br />
           with AI Intelligence
         </motion.h1>
@@ -89,10 +93,10 @@ function FeaturesSection() {
     <section id="features" className="py-24 bg-[hsl(var(--muted)/0.3)]">
       <div className="container mx-auto px-4">
         <motion.div className="text-center mb-16" {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-            Everything You Need to <span className="text-[hsl(var(--foreground))] opacity-90">Land Your Dream Job</span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Everything You Need to <span className="gradient-text">Land Your Dream Job</span>
           </h2>
-          <p className="text-[hsl(var(--muted-foreground))] text-lg max-w-2xl mx-auto font-light">
+          <p className="text-[hsl(var(--muted-foreground))] text-lg max-w-2xl mx-auto">
             A comprehensive suite of AI-powered tools designed to optimize your job search.
           </p>
         </motion.div>
@@ -100,13 +104,13 @@ function FeaturesSection() {
         <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" variants={staggerChildren} initial="initial" whileInView="animate" viewport={{ once: true }}>
           {features.map((feature, i) => (
             <motion.div key={i} variants={fadeInUp}>
-              <Card className="h-full group hover:border-[hsl(var(--border))] hover:bg-[hsl(var(--muted)/0.2)] transition-all duration-300 shadow-none border-[hsl(var(--border)/0.5)]">
+              <Card className="h-full group hover:border-[hsl(var(--primary)/0.5)] transition-all duration-300 hover:-translate-y-1">
                 <CardContent className="p-6">
-                  <div className="h-10 w-10 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform shadow-sm">
-                    <feature.icon className="h-5 w-5 text-[hsl(var(--primary-foreground))]" />
+                  <div className="h-12 w-12 rounded-xl gradient-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <feature.icon className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="text-lg font-medium tracking-tight mb-2">{feature.title}</h3>
-                  <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed font-light">{feature.desc}</p>
+                  <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+                  <p className="text-sm text-[hsl(var(--muted-foreground))]">{feature.desc}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -130,8 +134,8 @@ function HowItWorksSection() {
     <section className="py-24">
       <div className="container mx-auto px-4">
         <motion.div className="text-center mb-16" {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">How It Works</h2>
-          <p className="text-[hsl(var(--muted-foreground))] text-lg font-light">Four simple steps to a better resume</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+          <p className="text-[hsl(var(--muted-foreground))] text-lg">Four simple steps to a better resume</p>
         </motion.div>
 
         <div className="grid md:grid-cols-4 gap-8">
@@ -139,21 +143,21 @@ function HowItWorksSection() {
             <motion.div
               key={i}
               className="text-center relative"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.15 }}
               viewport={{ once: true }}
             >
               <div className="relative inline-block mb-6">
-                <div className="h-16 w-16 rounded-2xl bg-[hsl(var(--muted))] flex items-center justify-center mx-auto border border-[hsl(var(--border))]">
-                  <step.icon className="h-7 w-7 text-[hsl(var(--foreground))]" />
+                <div className="h-16 w-16 rounded-2xl gradient-primary flex items-center justify-center mx-auto">
+                  <step.icon className="h-8 w-8 text-white" />
                 </div>
-                <div className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] text-xs flex items-center justify-center font-medium">
+                <div className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-[hsl(var(--primary))] text-white text-xs flex items-center justify-center font-bold">
                   {i + 1}
                 </div>
               </div>
-              <h3 className="text-lg font-medium tracking-tight mb-2">{step.title}</h3>
-              <p className="text-sm text-[hsl(var(--muted-foreground))] font-light">{step.desc}</p>
+              <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
+              <p className="text-sm text-[hsl(var(--muted-foreground))]">{step.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -172,21 +176,21 @@ const stats = [
 
 function StatsSection() {
   return (
-    <section className="py-20 bg-[hsl(var(--primary))]">
+    <section className="py-20 gradient-primary">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, i) => (
             <motion.div
               key={i}
-              className="text-center text-[hsl(var(--primary-foreground))]"
-              initial={{ opacity: 0, scale: 0.95 }}
+              className="text-center text-white"
+              initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.1 }}
               viewport={{ once: true }}
             >
-              <stat.icon className="h-6 w-6 mx-auto mb-4 opacity-70" />
-              <div className="text-3xl md:text-4xl font-semibold tracking-tighter mb-2">{stat.value}</div>
-              <div className="text-sm font-light opacity-80">{stat.label}</div>
+              <stat.icon className="h-8 w-8 mx-auto mb-3 opacity-80" />
+              <div className="text-3xl md:text-4xl font-bold mb-1">{stat.value}</div>
+              <div className="text-sm opacity-80">{stat.label}</div>
             </motion.div>
           ))}
         </div>
@@ -214,8 +218,8 @@ function InteractiveScannerSection() {
     <section className="py-24 bg-[hsl(var(--muted)/0.3)] overflow-hidden">
       <div className="container mx-auto px-4">
         <motion.div className="text-center mb-16" {...fadeInUp} viewport={{ once: true }}>
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">See the AI in Action</h2>
-          <p className="text-[hsl(var(--muted-foreground))] text-lg font-light">Watch how our ATS simulator extracts and analyzes data instantly.</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">See the AI in Action</h2>
+          <p className="text-[hsl(var(--muted-foreground))] text-lg">Watch how our ATS simulator extracts and analyzes data instantly.</p>
         </motion.div>
 
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -264,8 +268,8 @@ function InteractiveScannerSection() {
             viewport={{ once: true }}
           >
             <div>
-              <h3 className="text-2xl font-semibold tracking-tight mb-4">Deep Keyword Extraction</h3>
-              <p className="text-[hsl(var(--muted-foreground))] font-light mb-6">
+              <h3 className="text-2xl font-bold mb-4">Deep Keyword Extraction</h3>
+              <p className="text-[hsl(var(--muted-foreground))] mb-6">
                 Our engine simulates exactly how enterprise Applicant Tracking Systems parse your resume, identifying missing skills instantly.
               </p>
               <Button onClick={handleScan} disabled={isScanning} size="lg" className="w-full sm:w-auto">
@@ -282,7 +286,7 @@ function InteractiveScannerSection() {
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">ATS Compatibility Score</span>
-                    <span className="text-2xl font-semibold tracking-tighter text-[hsl(var(--primary))]">87%</span>
+                    <span className="text-2xl font-bold text-[hsl(var(--primary))]">87%</span>
                   </div>
                   <div className="w-full bg-[hsl(var(--muted))] h-2 rounded-full overflow-hidden">
                     <motion.div 
@@ -331,7 +335,7 @@ function FAQSection() {
     <section className="py-24">
       <div className="container mx-auto px-4 max-w-3xl">
         <motion.div className="text-center mb-16" {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">Frequently Asked Questions</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
         </motion.div>
 
         <div className="space-y-3">
@@ -371,18 +375,18 @@ function FAQSection() {
 /* ─── CTA Section ──────────────────────────────────────────── */
 function CTASection() {
   return (
-    <section className="py-24 bg-[hsl(var(--foreground))] relative overflow-hidden">
+    <section className="py-24 gradient-primary relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, hsl(var(--background)) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+        <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
       </div>
       <div className="container mx-auto px-4 text-center relative z-10">
         <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial">
-          <h2 className="text-3xl md:text-5xl font-semibold tracking-tighter text-[hsl(var(--background))] mb-6">Ready to Transform Your Resume?</h2>
-          <p className="text-[hsl(var(--background))]/80 text-lg mb-8 max-w-xl mx-auto font-light">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Ready to Transform Your Resume?</h2>
+          <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">
             Join thousands of job seekers who've improved their resumes with AI-powered insights.
           </p>
           <Link to="/register">
-            <Button size="lg" className="bg-[hsl(var(--background))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))] text-base px-8 font-medium shadow-none">
+            <Button size="lg" className="bg-white text-[hsl(var(--primary))] hover:bg-white/90 text-base px-8">
               Start Analyzing Free <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
@@ -400,8 +404,8 @@ function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-lg bg-[hsl(var(--foreground))] flex items-center justify-center">
-                <span className="text-[hsl(var(--background))] font-bold text-sm">AI</span>
+              <div className="h-8 w-8 rounded-lg gradient-primary flex items-center justify-center">
+                <span className="text-white font-bold text-sm">AI</span>
               </div>
               <span className="font-bold text-lg">ResumeAnalyzer</span>
             </div>
