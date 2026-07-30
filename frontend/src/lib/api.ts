@@ -1,9 +1,8 @@
 import axios from "axios";
 
-// Normalize API URL to handle trailing slashes and redundant /api paths
-const rawUrl = (import.meta.env.VITE_API_URL || "http://localhost:8000").replace(/\/+$/, "");
-export const API_URL = rawUrl;
-export const BASE_API_URL = rawUrl.endsWith("/api") ? rawUrl : `${rawUrl}/api`;
+// If VITE_API_URL is provided, use it; otherwise use relative path /api (works natively on Vercel)
+const envUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/+$/, "") : "";
+export const BASE_API_URL = envUrl ? (envUrl.endsWith("/api") ? envUrl : `${envUrl}/api`) : "/api";
 
 const api = axios.create({
   baseURL: BASE_API_URL,
@@ -30,7 +29,6 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Check if network error (e.g., localhost unreachable on Vercel)
     if (!error.response && error.code === "ERR_NETWORK") {
       console.error(`Network Error: Unable to reach backend at ${BASE_API_URL}`);
     }

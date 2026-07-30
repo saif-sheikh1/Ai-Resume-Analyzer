@@ -1,6 +1,7 @@
 """
 Application configuration loaded from environment variables.
 """
+import os
 from pydantic_settings import BaseSettings
 from typing import Optional
 
@@ -9,18 +10,18 @@ class Settings(BaseSettings):
     """Application settings read from environment variables."""
 
     # Database
-    DATABASE_URL: str
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://postgres:Airesume%40123@db.jzwuentvficzlzqsbtcv.supabase.co:5432/postgres")
 
     # Supabase
-    SUPABASE_URL: str
-    SUPABASE_ANON_KEY: str
-    SUPABASE_SERVICE_ROLE_KEY: str
+    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "https://jzwuentvficzlzqsbtcv.supabase.co")
+    SUPABASE_ANON_KEY: str = os.getenv("SUPABASE_ANON_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6d3VlbnR2Zmljemx6cXNidGN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzOTgwMjEsImV4cCI6MjEwMDk3NDAyMX0.sszUHDATmjssgrr5qOGTENrboIfju7ceD2aJsZZjQPc")
+    SUPABASE_SERVICE_ROLE_KEY: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6d3VlbnR2Zmljemx6cXNidGN2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NTM5ODAyMSwiZXhwIjoyMTAwOTc0MDIxfQ.lI_RBfjfqzP2vysYvO8cGd18bdSnFrTa8hxcCvHhpSk")
 
     # Google Gemini AI
-    GEMINI_API_KEY: str
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "AQ.Ab8RN6LQXvgR0U4ORYMc3ahorCgocKRoyiIiD3cwcj1rXWJtGA")
 
     # JWT Authentication
-    JWT_SECRET: str
+    JWT_SECRET: str = os.getenv("JWT_SECRET", "ai-resume-analyzer-jwt-secret-key-2026-production-secure")
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -55,7 +56,7 @@ class Settings(BaseSettings):
         return self.DATABASE_URL
 
     class Config:
-        env_file = ".env"
+        env_file = ("backend/.env", ".env")
         env_file_encoding = "utf-8"
         case_sensitive = True
 
