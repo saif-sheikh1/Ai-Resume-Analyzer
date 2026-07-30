@@ -102,7 +102,7 @@ export default function DashboardPage() {
                   <XAxis dataKey="date" tick={{ fontSize: 12 }} tickFormatter={(v) => new Date(v).toLocaleDateString("en", { month: "short", day: "numeric" })} />
                   <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
                   <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }} />
-                  <Line type="monotone" dataKey="score" stroke="hsl(239, 84%, 67%)" strokeWidth={2} dot={{ fill: "hsl(239, 84%, 67%)", r: 4 }} />
+                  <Line type="monotone" dataKey="score" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ fill: "hsl(var(--primary))", r: 4 }} />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
@@ -131,7 +131,7 @@ export default function DashboardPage() {
                   <XAxis dataKey="name" tick={{ fontSize: 10 }} angle={-25} textAnchor="end" height={60} />
                   <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
                   <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }} />
-                  <Bar dataKey="score" fill="hsl(263, 70%, 58%)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="score" fill="hsl(var(--secondary))" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             ) : (

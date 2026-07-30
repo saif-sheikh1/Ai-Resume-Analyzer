@@ -59,8 +59,8 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--background))] px-4">
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-[hsl(239,84%,67%/0.08)] rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 left-1/4 w-72 h-72 bg-[hsl(263,70%,58%/0.06)] rounded-full blur-3xl" />
+        <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-[hsl(var(--primary)/0.08)] rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 left-1/4 w-72 h-72 bg-[hsl(var(--secondary)/0.06)] rounded-full blur-3xl" />
       </div>
 
       <motion.div

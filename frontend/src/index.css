@@ -3,57 +3,57 @@
 /* ─── CSS Variables (Design Tokens) ──────────────────────── */
 :root {
   --background: 210 40% 98%;
-  --foreground: 224 71% 4%;
+  --foreground: 222.2 47.4% 11.2%;
   --card: 0 0% 100%;
-  --card-foreground: 224 71% 4%;
+  --card-foreground: 222.2 47.4% 11.2%;
   --popover: 0 0% 100%;
-  --popover-foreground: 224 71% 4%;
-  --primary: 250 84% 60%;
+  --popover-foreground: 222.2 47.4% 11.2%;
+  --primary: 243.4 75.4% 58.6%;
   --primary-foreground: 210 40% 98%;
-  --secondary: 220 14.3% 95.9%;
-  --secondary-foreground: 224 71% 4%;
-  --muted: 220 14.3% 95.9%;
-  --muted-foreground: 220 8.9% 46.1%;
-  --accent: 220 14.3% 95.9%;
-  --accent-foreground: 224 71% 4%;
+  --secondary: 188.7 94.5% 42.7%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.3 19.3% 34.5%;
+  --accent: 160.1 84.1% 39.4%;
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
-  --border: 220 13% 91%;
-  --input: 220 13% 91%;
-  --ring: 250 84% 60%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 243.4 75.4% 58.6%;
   --radius: 1rem;
-  --chart-1: 250 84% 60%;
-  --chart-2: 280 75% 60%;
-  --chart-3: 160 84% 39%;
-  --chart-4: 43 100% 60%;
-  --chart-5: 0 84% 60%;
+  --chart-1: 243.4 75.4% 58.6%;
+  --chart-2: 188.7 94.5% 42.7%;
+  --chart-3: 160.1 84.1% 39.4%;
+  --chart-4: 37.7 92.1% 50.2%;
+  --chart-5: 0 84.2% 60.2%;
 }
 
 .dark {
-  --background: 224 71% 4%;
+  --background: 222.2 47.4% 11.2%;
   --foreground: 210 40% 98%;
-  --card: 224 71% 6%;
+  --card: 215 32% 17%;
   --card-foreground: 210 40% 98%;
-  --popover: 224 71% 6%;
+  --popover: 215 32% 17%;
   --popover-foreground: 210 40% 98%;
-  --primary: 250 84% 60%;
+  --primary: 243.4 75.4% 58.6%;
   --primary-foreground: 210 40% 98%;
-  --secondary: 224 30% 12%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 224 30% 12%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 224 30% 12%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 62.8% 30.6%;
+  --secondary: 188.7 94.5% 42.7%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 215 32% 17%;
+  --muted-foreground: 214.3 31.8% 84%;
+  --accent: 160.1 84.1% 39.4%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
-  --border: 224 30% 15%;
-  --input: 224 30% 15%;
-  --ring: 250 84% 60%;
-  --chart-1: 250 84% 60%;
-  --chart-2: 280 75% 60%;
-  --chart-3: 160 84% 39%;
-  --chart-4: 43 100% 60%;
-  --chart-5: 0 84% 60%;
+  --border: 215.3 25% 26.7%;
+  --input: 215.3 25% 26.7%;
+  --ring: 243.4 75.4% 58.6%;
+  --chart-1: 243.4 75.4% 58.6%;
+  --chart-2: 188.7 94.5% 42.7%;
+  --chart-3: 160.1 84.1% 39.4%;
+  --chart-4: 37.7 92.1% 50.2%;
+  --chart-5: 0 84.2% 60.2%;
 }
 
 /* ─── Base Styles ──────────────────────────────────────────── */
@@ -91,11 +91,11 @@
 
 /* ─── Gradient Utilities ──────────────────────────────────── */
 .gradient-primary {
-  background: linear-gradient(135deg, hsl(239, 84%, 67%), hsl(263, 70%, 58%));
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, hsl(239, 84%, 67%), hsl(263, 70%, 58%));
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -111,7 +111,7 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, hsl(239, 84%, 67%), hsl(263, 70%, 58%));
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -133,8 +133,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px hsl(239 84% 67% / 0.3); }
-  50% { box-shadow: 0 0 40px hsl(239 84% 67% / 0.5); }
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+  50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.5); }
 }
 
 @keyframes shimmer {
