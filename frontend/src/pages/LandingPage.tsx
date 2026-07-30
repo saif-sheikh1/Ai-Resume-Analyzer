@@ -32,12 +32,7 @@ function HeroSection() {
       </div>
 
       <div className="container mx-auto px-4 py-20 text-center">
-        <motion.div {...fadeInUp}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-[hsl(var(--border))] px-4 py-1.5 text-sm mb-8 glass">
-            <Sparkles className="h-4 w-4 text-[hsl(var(--primary))]" />
-            <span>Powered by Google Gemini AI</span>
-          </div>
-        </motion.div>
+
 
         <motion.h1
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
@@ -204,77 +199,7 @@ function StatsSection() {
   );
 }
 
-/* ─── Pricing Section ──────────────────────────────────────── */
-const plans = [
-  {
-    name: "Free", price: "$0", period: "forever",
-    features: ["3 Resume Uploads", "Basic ATS Score", "Limited AI Analysis", "1 Job Match per Day"],
-    cta: "Get Started", popular: false
-  },
-  {
-    name: "Pro", price: "$19", period: "per month",
-    features: ["Unlimited Uploads", "Detailed ATS Score", "Full AI Analysis", "Unlimited Job Matches", "Cover Letter Generator", "Interview Prep", "PDF Reports", "Priority Support"],
-    cta: "Start Free Trial", popular: true
-  },
-  {
-    name: "Enterprise", price: "$49", period: "per month",
-    features: ["Everything in Pro", "Team Management", "API Access", "Custom Branding", "Dedicated Support", "Analytics Dashboard", "Bulk Resume Processing"],
-    cta: "Contact Sales", popular: false
-  },
-];
 
-function PricingSection() {
-  return (
-    <section id="pricing" className="py-24 bg-[hsl(var(--muted)/0.3)]">
-      <div className="container mx-auto px-4">
-        <motion.div className="text-center mb-16" {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-[hsl(var(--muted-foreground))] text-lg">Start free, upgrade when you're ready</p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {plans.map((plan, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.15 }}
-              viewport={{ once: true }}
-            >
-              <Card className={`h-full relative ${plan.popular ? "border-[hsl(var(--primary))] shadow-lg scale-105" : ""}`}>
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 gradient-primary text-white text-xs font-bold px-4 py-1 rounded-full">
-                    Most Popular
-                  </div>
-                )}
-                <CardContent className="p-6 pt-8">
-                  <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
-                  <div className="mb-6">
-                    <span className="text-4xl font-bold">{plan.price}</span>
-                    <span className="text-[hsl(var(--muted-foreground))] ml-1">/{plan.period}</span>
-                  </div>
-                  <ul className="space-y-3 mb-8">
-                    {plan.features.map((f, j) => (
-                      <li key={j} className="flex items-center gap-2 text-sm">
-                        <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link to="/register">
-                    <Button className="w-full" variant={plan.popular ? "default" : "outline"}>
-                      {plan.cta}
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ─── FAQ Section ──────────────────────────────────────────── */
 const faqs = [
@@ -377,7 +302,6 @@ function Footer() {
             <h4 className="font-semibold mb-3">Product</h4>
             <ul className="space-y-2 text-sm text-[hsl(var(--muted-foreground))]">
               <li><a href="#features" className="hover:text-[hsl(var(--foreground))] transition-colors">Features</a></li>
-              <li><a href="#pricing" className="hover:text-[hsl(var(--foreground))] transition-colors">Pricing</a></li>
               <li><Link to="/register" className="hover:text-[hsl(var(--foreground))] transition-colors">Get Started</Link></li>
             </ul>
           </div>
@@ -415,7 +339,6 @@ export default function LandingPage() {
       <FeaturesSection />
       <HowItWorksSection />
       <StatsSection />
-      <PricingSection />
       <FAQSection />
       <CTASection />
       <Footer />
