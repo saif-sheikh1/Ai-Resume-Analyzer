@@ -1,0 +1,12 @@
+{
+  "name": "ai-resume-analyzer-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "dev": "npm run dev --prefix frontend"
+  }
+}

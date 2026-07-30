@@ -7,15 +7,27 @@ This guide details deploying the application to production:
 
 ---
 
-## 1. Supabase Setup
+## 1. Vercel Deployment (Frontend)
 
-1. Create a project at [supabase.com](https://supabase.com).
-2. Go to **Project Settings -> Database** and copy the Connection String (`postgresql://postgres:[password]@db.[ref].supabase.co:5432/postgres`).
-3. Go to **Storage**, create a new bucket named `resumes` (Private or Public depending on requirements).
-4. Run Alembic migrations from your local backend environment:
-   ```bash
-   alembic upgrade head
-   ```
+We have configured **`vercel.json`** and monorepo root delegators so Vercel can deploy automatically regardless of your root directory setting.
+
+### Option A: Import Whole Git Repository (Recommended)
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New -> Project**.
+2. Select your `Ai-Resume-Analyzer` GitHub repository.
+3. Keep Root Directory as `./`.
+4. Vercel will automatically detect `vite` framework, run `npm run build`, and use `frontend/dist`.
+5. Under **Environment Variables**, add:
+   - `VITE_API_URL`: `https://<your-render-backend-name>.onrender.com`
+6. Click **Deploy**.
+
+### Option B: Set Root Directory to `frontend`
+1. Under Vercel Project Settings -> **General**, set **Root Directory** to `frontend`.
+2. Framework Preset: **Vite**.
+3. Environment Variables:
+   - `VITE_API_URL`: `https://<your-render-backend-name>.onrender.com`
+4. Click **Deploy**.
+
+*Note: All page routes (`/dashboard`, `/upload`, `/analysis`, etc.) are configured with single-page application (SPA) rewrites to `/index.html` in `vercel.json`.*
 
 ---
 
@@ -23,45 +35,37 @@ This guide details deploying the application to production:
 
 1. Connect your repository to [Render](https://render.com).
 2. Create a new **Web Service**.
-3. Select `Python 3` runtime or `Docker`.
-4. Set Build Command:
+3. Select `Python 3` runtime.
+4. Set Root Directory to `backend`.
+5. Build Command:
    ```bash
    pip install -r requirements.txt && python -m spacy download en_core_web_sm && alembic upgrade head
    ```
-5. Set Start Command:
+6. Start Command:
    ```bash
    uvicorn app.main:app --host 0.0.0.0 --port $PORT
    ```
-6. Add Environment Variables:
-   - `DATABASE_URL`
-   - `SUPABASE_URL`
-   - `SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-   - `GEMINI_API_KEY`
-   - `JWT_SECRET`
-   - `FRONTEND_URL` (URL of your Vercel deployment)
+7. Environment Variables:
+   - `DATABASE_URL`: `postgresql://postgres:Airesume%40123@db.jzwuentvficzlzqsbtcv.supabase.co:5432/postgres`
+   - `SUPABASE_URL`: `https://jzwuentvficzlzqsbtcv.supabase.co`
+   - `SUPABASE_ANON_KEY`: `<your-supabase-anon-key>`
+   - `SUPABASE_SERVICE_ROLE_KEY`: `<your-supabase-service-role-key>`
+   - `GEMINI_API_KEY`: `<your-gemini-api-key>`
+   - `JWT_SECRET`: `ai-resume-analyzer-jwt-secret-key-2026-production-secure`
+   - `FRONTEND_URL`: `https://<your-vercel-app-name>.vercel.app`
 
 ---
 
-## 3. Frontend Deployment (Vercel)
+## 3. Supabase Setup (Database & Storage)
 
-1. Connect your repository to [Vercel](https://vercel.com).
-2. Set Root Directory to `frontend`.
-3. Build Command: `npm run build`
-4. Output Directory: `dist`
-5. Add Environment Variable:
-   - `VITE_API_URL`: Your Render backend service URL (e.g. `https://ai-resume-analyzer-api.onrender.com`)
+1. Database is hosted at Supabase PostgreSQL: `db.jzwuentvficzlzqsbtcv.supabase.co`
+2. Tables and indexes are generated via Alembic migration (`alembic upgrade head`).
+3. Storage bucket `resumes` is auto-initialized on first file upload.
 
 ---
 
-## 4. Docker Deployment (Alternative)
-
-To deploy on a VPS (AWS EC2, DigitalOcean, Hetzner):
+## 4. Local Docker Compose (Alternative)
 
 ```bash
-git clone <your-repo>
-cd "Ai Resume Analyzer"
-cp backend/.env.example backend/.env
-# Fill in production secrets in backend/.env
 docker-compose up -d --build
 ```
