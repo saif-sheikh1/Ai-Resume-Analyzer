@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI):
     logger.info(f"   Frontend URL: {settings.FRONTEND_URL}")
     logger.info(f"   Debug mode: {settings.DEBUG}")
 
-    # Create tables if they don't exist (for development)
+    # Create tables if they don't exist
     from app.db.base import Base
     from app.db.session import engine
     from app.models import User, Resume, Analysis, JobMatch  # noqa: F401
@@ -55,15 +55,11 @@ app = FastAPI(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-# CORS
+# CORS — Allow all local, Vercel, Render, and custom domain origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        settings.FRONTEND_URL,
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=["*"],
+    allow_origin_regex=r"https?://.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

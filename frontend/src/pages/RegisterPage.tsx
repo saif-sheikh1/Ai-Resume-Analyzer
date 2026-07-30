@@ -33,7 +33,11 @@ export default function RegisterPage() {
       toast.success("Account created successfully!");
       navigate("/dashboard");
     } catch (err: any) {
-      toast.error(err.response?.data?.detail || "Registration failed");
+      if (!err.response) {
+        toast.error("Unable to connect to API server. Please verify backend is running and VITE_API_URL is configured.");
+      } else {
+        toast.error(err.response?.data?.detail || "Registration failed. Please check your credentials.");
+      }
     }
   };
 

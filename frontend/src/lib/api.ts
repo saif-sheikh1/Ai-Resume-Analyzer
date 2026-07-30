@@ -1,9 +1,12 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+// Normalize API URL to handle trailing slashes and redundant /api paths
+const rawUrl = (import.meta.env.VITE_API_URL || "http://localhost:8000").replace(/\/+$/, "");
+export const API_URL = rawUrl;
+export const BASE_API_URL = rawUrl.endsWith("/api") ? rawUrl : `${rawUrl}/api`;
 
 const api = axios.create({
-  baseURL: `${API_URL}/api`,
+  baseURL: BASE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -27,13 +30,18 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Check if network error (e.g., localhost unreachable on Vercel)
+    if (!error.response && error.code === "ERR_NETWORK") {
+      console.error(`Network Error: Unable to reach backend at ${BASE_API_URL}`);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       const refreshToken = localStorage.getItem("refresh_token");
       if (refreshToken) {
         try {
-          const { data } = await axios.post(`${API_URL}/api/auth/refresh`, {
+          const { data } = await axios.post(`${BASE_API_URL}/auth/refresh`, {
             refresh_token: refreshToken,
           });
 
@@ -43,7 +51,6 @@ api.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
           return api(originalRequest);
         } catch {
-          // Refresh failed — clear tokens and redirect
           localStorage.removeItem("access_token");
           localStorage.removeItem("refresh_token");
           window.location.href = "/login";
