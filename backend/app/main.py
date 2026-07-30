@@ -29,12 +29,16 @@ async def lifespan(app: FastAPI):
     logger.info(f"   Frontend URL: {settings.FRONTEND_URL}")
     logger.info(f"   Debug mode: {settings.DEBUG}")
 
-    # Create tables if they don't exist
-    from app.db.base import Base
-    from app.db.session import engine
-    from app.models import User, Resume, Analysis, JobMatch  # noqa: F401
-    Base.metadata.create_all(bind=engine)
-    logger.info("   Database tables ensured")
+    # Create tables only in local DEBUG mode to keep serverless cold starts under 100ms
+    if settings.DEBUG:
+        try:
+            from app.db.base import Base
+            from app.db.session import engine
+            from app.models import User, Resume, Analysis, JobMatch  # noqa: F401
+            Base.metadata.create_all(bind=engine)
+            logger.info("   Database tables ensured (DEBUG mode)")
+        except Exception as e:
+            logger.warning(f"   Database table creation skipped: {e}")
 
     yield
 

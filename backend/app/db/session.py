@@ -1,17 +1,19 @@
 """
 SQLAlchemy database engine and session configuration.
+Optimized for serverless environments (Vercel) and Supabase PostgreSQL.
 """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from app.core.config import settings
 
-# Create synchronous engine for Supabase PostgreSQL
+# Create synchronous engine optimized for serverless functions
 engine = create_engine(
     settings.sync_database_url,
-    pool_size=10,
-    max_overflow=20,
+    pool_size=3,
+    max_overflow=5,
     pool_pre_ping=True,
     pool_recycle=300,
+    connect_args={"connect_timeout": 5},
     echo=settings.DEBUG,
 )
 
